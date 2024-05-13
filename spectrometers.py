@@ -15,6 +15,7 @@ df = pd.read_excel(tables_directory + 'iPHAOS.xlsx',
 # to print to screen the imported dataframe
 # display(df)
 
+fig = plt.figure(figsize=plt.figaspect(0.5))
 
 
 df['Bandwidth-to-resolution ratio'] = pd.to_numeric(df['Bandwidth-to-resolution ratio'], errors='coerce')
@@ -26,7 +27,7 @@ df.plot(x='Refs.', y='Bandwidth [nm]', style='o')
 df.plot(x='Refs.', y='Spectral resolution [nm]', style='o')
 
 # example 3 shown in the paper (Fig. 12)
-df_dropped1 = df.dropna(subset=['Spectral resolution [nm]','Bandwidth-to-resolution ratio','Refs.'])
+df_dropped1 = df.dropna(subset=['Bandwidth [nm]', 'Spectral resolution [nm]','Bandwidth-to-resolution ratio','Refs.'])
 ax = fig.add_subplot(projection='3d')
 # create a RandomColor object
 rc = RandomColor()
@@ -35,13 +36,19 @@ num_points = len(df_dropped1)
 colors = rc.generate(count = num_points)
 markers = Line2D.filled_markers
 # plot each point with a unique color and shape
-for i, (x, y, z, reference) in enumerate(zip(df_dropped1['Spectral resolution [nm]'], df_dropped1['Bandwidth-to-resolution ratio'], df_dropped1['Refs.'], df_dropped1['Refs.'])):
+for i, (x, y, z, reference) in enumerate(zip(df_dropped1['Spectral resolution [nm]'], df_dropped1['Bandwidth-to-resolution ratio'], df_dropped1['Bandwidth [nm]'], df_dropped1['Refs.'])):
     ax.scatter(x, y, z, color=colors[i], marker=markers[i % len(markers)], label=reference)
 # set labels and title
 ax.set_xlabel('Spectral resolution [nm]')
 ax.set_ylabel('Bandwidth-to-resolution ratio')
-ax.set_zlabel('Refs.')
-ax.set_title("Integrated Spectrometers Metrics (Already Published)")
+ax.set_zlabel('Bandwidth [nm]')
+# ax.set_title("Integrated Spectrometers Metrics")
+
+ax.set_xlim(0, 20)
+ax.set_ylim(0, 800)
+ax.set_zlim(0, 2000)
+
+
 # show legend
 ax.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left', title = 'Refs.')
 plt.show()
