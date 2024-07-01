@@ -21,13 +21,13 @@ fig = plt.figure(figsize=plt.figaspect(0.5))
 df['Bandwidth-to-resolution ratio'] = pd.to_numeric(df['Bandwidth-to-resolution ratio'], errors='coerce')
 
 # example 1 shown in the paper (Fig. 10)
-df.plot(x='Refs.', y='Bandwidth [nm]', style='o')
+df.plot(x='Ref.', y='Bandwidth [nm]', style='o')
 
 # example 2 shown in the paper (Fig. 11)
-df.plot(x='Refs.', y='Spectral resolution [nm]', style='o')
+df.plot(x='Ref.', y='Spectral resolution [nm]', style='o')
 
 # example 3 shown in the paper (Fig. 12)
-df_dropped1 = df.dropna(subset=['Bandwidth [nm]', 'Spectral resolution [nm]','Bandwidth-to-resolution ratio','Refs.'])
+df_dropped1 = df.dropna(subset=['Bandwidth [nm]', 'Spectral resolution [nm]','Bandwidth-to-resolution ratio','Ref.'])
 ax = fig.add_subplot(projection='3d')
 # create a RandomColor object
 rc = RandomColor()
@@ -36,7 +36,7 @@ num_points = len(df_dropped1)
 colors = rc.generate(count = num_points)
 markers = Line2D.filled_markers
 # plot each point with a unique color and shape
-for i, (x, y, z, reference) in enumerate(zip(df_dropped1['Spectral resolution [nm]'], df_dropped1['Bandwidth-to-resolution ratio'], df_dropped1['Bandwidth [nm]'], df_dropped1['Refs.'])):
+for i, (x, y, z, reference) in enumerate(zip(df_dropped1['Spectral resolution [nm]'], df_dropped1['Bandwidth-to-resolution ratio'], df_dropped1['Bandwidth [nm]'], df_dropped1['Ref.'])):
     ax.scatter(x, y, z, color=colors[i], marker=markers[i % len(markers)], label=reference)
 # set labels and title
 ax.set_xlabel('Spectral resolution [nm]')
@@ -50,7 +50,7 @@ ax.set_zlim(0, 2000)
 
 
 # show legend
-ax.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left', title = 'Refs.')
+ax.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left', title = 'Ref.')
 plt.show()
 
 print('done!')
